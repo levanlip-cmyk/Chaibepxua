@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chái Bếp Xưa - Cơm Quê Miền Tây</title>
+    <title>Chái Bếp Xưa - Miệt Vườn Sông Nước</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Quicksand:wght@400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,15 +21,17 @@
             theme: {
                 extend: {
                     colors: {
-                        'bamboo-light': '#fefce8', /* Màu kem sáng */
-                        'bamboo-main': '#d4a373', /* Màu tre khô */
-                        'bamboo-dark': '#8b5e3c', /* Màu nâu đất */
-                        'leaf-green': '#606c38',  /* Màu xanh lá lúa */
-                        'clay-pot': '#bc6c25',    /* Màu đất nung */
+                        'garden-green': '#3f6212', /* Xanh lá già */
+                        'fresh-green': '#84cc16',  /* Xanh lá mạ */
+                        'ripe-mango': '#facc15',   /* Vàng xoài chín */
+                        'earth-brown': '#78350f',  /* Nâu đất */
+                        'river-blue': '#0ea5e9',   /* Xanh dòng sông */
+                        'cream-bg': '#fefce8',     /* Nền kem */
                     },
                     fontFamily: {
                         'serif': ['Merriweather', 'serif'],
                         'sans': ['Quicksand', 'sans-serif'],
+                        'hand': ['"Dancing Script"', 'cursive'], /* Font viết tay mềm mại */
                     }
                 }
             }
@@ -37,157 +39,236 @@
     </script>
 
     <style>
-        /* Hiệu ứng cuộn mượt */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
         
-        /* Họa tiết nền tre trúc nhẹ */
-        .bg-pattern {
+        /* Nền họa tiết lá chuối cách điệu */
+        .bg-banana-leaf {
             background-color: #fefce8;
-            background-image: radial-gradient(#d4a373 0.5px, transparent 0.5px), radial-gradient(#d4a373 0.5px, #fefce8 0.5px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+            background-image: 
+                radial-gradient(#3f6212 0.5px, transparent 0.5px),
+                radial-gradient(#3f6212 0.5px, #fefce8 0.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
             opacity: 1;
         }
 
-        .text-shadow {
+        .text-shadow-garden {
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* Hiệu ứng hover cho ảnh */
-        .card-zoom:hover img {
-            transform: scale(1.1);
-        }
-        .card-zoom img {
-            transition: transform 0.5s ease;
+        .card-zoom:hover img { transform: scale(1.1); }
+        .card-zoom img { transition: transform 0.5s ease; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #3f6212; border-radius: 5px; }
+
+        /* --- ANIMATIONS --- */
+        
+        /* Lá rơi */
+        @keyframes leaf-fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(20px) rotate(360deg); opacity: 0; }
         }
 
-        /* Tùy chỉnh thanh cuộn */
-        ::-webkit-scrollbar {
-            width: 10px;
+        .falling-leaf {
+            position: absolute;
+            color: #3f6212;
+            font-size: 1.2rem;
+            animation: leaf-fall linear infinite;
+            z-index: 50;
+            pointer-events: none;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+
+        /* Cá nhảy */
+        @keyframes fish-jump {
+            0% { transform: translateX(-10vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+            20% { opacity: 1; }
+            50% { transform: translateX(50vw) translateY(20vh) rotate(0deg); }
+            80% { opacity: 1; }
+            100% { transform: translateX(110vw) translateY(100vh) rotate(45deg); opacity: 0; }
         }
-        ::-webkit-scrollbar-thumb {
-            background: #8b5e3c;
-            border-radius: 5px;
+
+        /* Gà chạy - Hướng từ trái sang phải */
+        @keyframes chicken-run {
+            0% { transform: translateX(-20vw) scaleX(-1); } 
+            100% { transform: translateX(120vw) scaleX(-1); }
+        }
+
+        @keyframes chicken-hop {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Đu đưa nhẹ (cho trái cây) */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .fish-wrapper {
+            animation: fish-jump 6s ease-in-out infinite;
+            position: absolute;
+            bottom: -50px;
+        }
+
+        .chicken-wrapper {
+            animation: chicken-run 12s linear infinite;
+            position: absolute;
+            bottom: 12%; /* Chạy trên bờ cỏ */
+        }
+
+        .chicken-hop-wrapper {
+            animation: chicken-hop 0.4s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .hanging-fruit {
+            animation: sway 3s ease-in-out infinite;
+            transform-origin: top center;
         }
     </style>
 </head>
-<body class="font-sans text-gray-800 bg-bamboo-light">
+<body class="font-sans text-gray-800 bg-cream-bg">
+
+    <!-- Container hiệu ứng lá rơi -->
+    <div id="leaf-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-md border-b-4 border-bamboo-main" id="navbar">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <nav class="fixed w-full z-40 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-md border-b-4 border-garden-green" id="navbar">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-leaf-green rounded-full flex items-center justify-center text-white text-xl">
-                    <i class="fa-solid fa-leaf"></i>
+                <div class="w-12 h-12 bg-garden-green rounded-full flex items-center justify-center text-white text-2xl shadow-lg border-2 border-ripe-mango">
+                    <i class="fa-solid fa-seedling"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-serif font-bold text-2xl text-bamboo-dark tracking-wide">Chái Bếp Xưa</span>
-                    <span class="text-xs text-clay-pot uppercase tracking-widest">Hương vị miền Tây</span>
+                    <span class="font-hand font-bold text-3xl text-garden-green tracking-wide">Chái Bếp Xưa</span>
+                    <span class="text-xs text-earth-brown uppercase tracking-widest font-bold">Hương Vị Miệt Vườn</span>
                 </div>
             </a>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8 font-medium text-bamboo-dark">
-                <a href="#home" class="hover:text-leaf-green transition">Trang Chủ</a>
-                <a href="#about" class="hover:text-leaf-green transition">Câu Chuyện</a>
-                <a href="#menu" class="hover:text-leaf-green transition">Thực Đơn</a>
-                <a href="#gallery" class="hover:text-leaf-green transition">Không Gian</a>
-                <a href="#contact" class="hover:text-leaf-green transition">Liên Hệ</a>
+            <div class="hidden md:flex space-x-8 font-medium text-earth-brown items-center">
+                <a href="#home" class="hover:text-garden-green transition">Trang Chủ</a>
+                <a href="#about" class="hover:text-garden-green transition">Vườn Nhà</a>
+                <a href="#menu" class="hover:text-garden-green transition">Đặc Sản</a>
+                <a href="#gallery" class="hover:text-garden-green transition">Góc Quê</a>
+                <a href="#contact" class="hover:text-garden-green transition">Liên Hệ</a>
             </div>
 
             <!-- CTA Button -->
-            <a href="#reservation" class="hidden md:inline-block bg-clay-pot hover:bg-bamboo-dark text-white px-5 py-2 rounded-full font-bold transition shadow-lg">
-                Đặt Bàn Ngay
+            <a href="#reservation" class="hidden md:inline-block bg-garden-green hover:bg-earth-brown text-white px-6 py-2 rounded-full font-bold transition shadow-lg border-2 border-white flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check"></i> Đặt Bàn
             </a>
 
             <!-- Mobile Menu Button -->
-            <button class="md:hidden text-bamboo-dark text-2xl" onclick="toggleMobileMenu()">
+            <button class="md:hidden text-garden-green text-2xl" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
-            <a href="#home" class="block px-4 py-3 text-bamboo-dark hover:bg-amber-50" onclick="toggleMobileMenu()">Trang Chủ</a>
-            <a href="#about" class="block px-4 py-3 text-bamboo-dark hover:bg-amber-50" onclick="toggleMobileMenu()">Câu Chuyện</a>
-            <a href="#menu" class="block px-4 py-3 text-bamboo-dark hover:bg-amber-50" onclick="toggleMobileMenu()">Thực Đơn</a>
-            <a href="#reservation" class="block px-4 py-3 text-clay-pot font-bold hover:bg-amber-50" onclick="toggleMobileMenu()">Đặt Bàn</a>
+            <a href="#home" class="block px-4 py-3 text-earth-brown hover:bg-green-50" onclick="toggleMobileMenu()">Trang Chủ</a>
+            <a href="#about" class="block px-4 py-3 text-earth-brown hover:bg-green-50" onclick="toggleMobileMenu()">Vườn Nhà</a>
+            <a href="#menu" class="block px-4 py-3 text-earth-brown hover:bg-green-50" onclick="toggleMobileMenu()">Đặc Sản</a>
+            <a href="#reservation" class="block px-4 py-3 text-garden-green font-bold hover:bg-green-50" onclick="toggleMobileMenu()">Đặt Bàn</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background Image with Overlay -->
+        <!-- Background Image: Fruit Garden / Canal -->
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=2070&auto=format&fit=crop" alt="Ngôi nhà thôn quê và cây dừa" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/40"></div>
+            <img src="https://images.unsplash.com/photo-1595123550441-d377e017de6a?q=80&w=2071&auto=format&fit=crop" alt="Vườn trái cây miền Tây" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/20"></div>
+            <!-- Lớp gradient xanh mát dưới chân -->
+            <div class="absolute bottom-0 w-full h-32 bg-gradient-to-t from-garden-green/90 to-transparent"></div>
         </div>
 
-        <div class="container mx-auto px-4 z-10 text-center text-white">
-            <div class="animate-fade-in-up">
-                <p class="font-serif italic text-xl md:text-2xl mb-4 text-amber-300">"Về nhà ăn cơm, má nấu..."</p>
-                <h1 class="font-serif text-5xl md:text-7xl font-bold mb-6 text-shadow leading-tight">
-                    Đậm Đà <br> <span class="text-amber-400">Hương Vị Miền Tây</span>
+        <!-- ANIMATION LAYER -->
+        <div class="absolute inset-0 z-1 pointer-events-none overflow-hidden">
+            <!-- Cá Lóc Nhảy (Nguyên bản) -->
+            <div class="fish-wrapper text-7xl md:text-9xl" style="left: 0; animation-duration: 8s;">
+                🐟
+                <span class="text-white font-hand text-xl absolute top-full left-0 opacity-80 rotate-12 drop-shadow-md">Tươi ngon!</span>
+            </div>
+
+            <!-- Đàn Gà Chạy Vườn (Nguyên bản) -->
+            <div class="chicken-wrapper text-6xl md:text-8xl" style="bottom: 12vh;">
+                <div class="chicken-hop-wrapper">🐓</div>
+                <div class="absolute -top-6 -right-10 text-3xl animate-pulse">🍃</div>
+            </div>
+
+            <!-- Gà Mái Chạy Theo -->
+            <div class="chicken-wrapper text-5xl md:text-7xl" style="bottom: 14vh; animation-delay: 1.5s; animation-duration: 11s;">
+                <div class="chicken-hop-wrapper" style="animation-delay: 0.2s">🐔</div>
+                <div class="text-white text-xs bg-garden-green rounded px-2 py-1 absolute -top-8 left-0 shadow-sm border border-white">Chờ em với!</div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 z-10 text-center text-white relative">
+            <div class="animate-fade-in-up bg-black/30 p-8 md:p-12 rounded-3xl backdrop-blur-sm border border-white/30 shadow-2xl">
+                <div class="mb-2 text-ripe-mango text-4xl animate-bounce"><i class="fa-solid fa-sun"></i></div>
+                <p class="font-hand text-2xl md:text-4xl mb-2 text-fresh-green drop-shadow-md">"Về miền Tây, cây xanh trái ngọt..."</p>
+                <h1 class="font-serif text-5xl md:text-7xl font-bold mb-6 text-shadow-garden leading-tight text-white">
+                    Miệt Vườn <br> <span class="text-ripe-mango">Sông Nước Hữu Tình</span>
                 </h1>
-                <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
-                    Thưởng thức bữa cơm quê trong không gian nhà tranh, vách tre mộc mạc giữa lòng thành phố.
+                <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light text-gray-100">
+                    Thưởng thức bữa cơm quê dưới bóng dừa xanh mát, ngắm cá lội, gà chạy và nếm thử những món đặc sản "độc nhất vô nhị".
                 </p>
                 <div class="flex flex-col md:flex-row justify-center gap-4">
-                    <a href="#menu" class="bg-leaf-green hover:bg-green-800 text-white px-8 py-3 rounded-full font-bold text-lg transition border-2 border-leaf-green">
-                        Xem Thực Đơn
-                    </a>
-                    <a href="#reservation" class="bg-transparent hover:bg-white hover:text-bamboo-dark text-white px-8 py-3 rounded-full font-bold text-lg transition border-2 border-white">
-                        Đặt Bàn Trước
+                    <a href="#menu" class="bg-garden-green hover:bg-earth-brown text-white px-8 py-3 rounded-full font-bold text-lg transition border-2 border-fresh-green shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-utensils"></i> Xem Thực Đơn
                     </a>
                 </div>
             </div>
         </div>
-        
-        <!-- Decoration Bamboo Leaf -->
-        <div class="absolute bottom-0 left-0 w-32 md:w-48 opacity-80 pointer-events-none">
-            <img src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/128/external-bamboo-spa-flaticons-lineal-color-flat-icons-2.png" alt="leaf" class="w-full">
-        </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-pattern relative">
+    <section id="about" class="py-20 relative bg-bg-banana-leaf">
+        <!-- Decoration: Hanging fruits top corners -->
+        <div class="absolute top-0 left-10 text-6xl hanging-fruit origin-top z-10" style="animation-duration: 4s;">🥭</div>
+        <div class="absolute top-0 right-10 text-6xl hanging-fruit origin-top z-10" style="animation-duration: 5s;">🥥</div>
+
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2 relative">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-bamboo-main transform rotate-2 hover:rotate-0 transition duration-500">
-                        <img src="https://images.unsplash.com/photo-1526494631345-089c720562e8?q=80&w=1974&auto=format&fit=crop" alt="Bamboo interior" class="w-full h-[400px] object-cover">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-garden-green transform -rotate-1 hover:rotate-0 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1565060169194-11849a786f77?q=80&w=2070&auto=format&fit=crop" alt="Nhà chòi miền Tây" class="w-full h-[400px] object-cover">
                     </div>
-                    <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-xl border border-bamboo-main hidden md:block">
-                        <p class="font-serif text-bamboo-dark text-lg font-bold">100% Tre tự nhiên</p>
+                    <!-- Badge -->
+                    <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-xl border-2 border-garden-green hidden md:block transform rotate-2">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-check-circle text-garden-green text-2xl"></i>
+                            <div>
+                                <p class="font-bold text-earth-brown">Chuẩn Gốc</p>
+                                <p class="text-xs text-gray-500">Miền Tây Nam Bộ</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="md:w-1/2">
-                    <h3 class="text-clay-pot font-bold uppercase tracking-wider mb-2">Câu Chuyện Của Chúng Tôi</h3>
-                    <h2 class="font-serif text-4xl font-bold text-bamboo-dark mb-6">Chái Bếp Xưa - Ký Ức Miền Sông Nước</h2>
-                    <p class="text-gray-700 mb-4 leading-relaxed">
-                        Lấy cảm hứng từ những ngôi nhà lá đơn sơ bên dòng kênh xanh mát, <strong>Chái Bếp Xưa</strong> được dựng lên hoàn toàn bằng tre, trúc và lá dừa nước. Bước vào quán, bạn như bỏ lại sau lưng những ồn ào phố thị.
+                    <h3 class="text-garden-green font-bold uppercase tracking-wider mb-2 font-sans flex items-center gap-2">
+                        <i class="fa-solid fa-leaf"></i> Không Gian Xanh
+                    </h3>
+                    <h2 class="font-serif text-4xl font-bold text-earth-brown mb-6">Vườn Cây, Ao Cá & Chòi Lá</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed font-medium">
+                        Bỏ lại khói bụi thành phố, mời bạn ghé thăm **Chái Bếp Xưa** - một góc miệt vườn thu nhỏ. Nơi đây có hàng dừa rợp bóng, có cầu khỉ đong đưa và những chòi lá mát rượi nằm ngay trên mặt nước.
                     </p>
                     <p class="text-gray-700 mb-6 leading-relaxed">
-                        Chúng tôi không chỉ phục vụ món ăn, mà còn phục vụ cả nỗi nhớ. Từng chiếc bàn tre, cái mẹt đựng thức ăn, đến nồi cá kho tộ đều được chăm chút để tái hiện trọn vẹn không gian bếp của Ngoại ngày xưa.
+                        Không cần máy lạnh, gió trời lồng lộng từ sông Hậu thổi vào cũng đủ làm bạn say lòng. Ngồi xếp bằng trên sạp tre, nghe đờn ca tài tử và chờ món lên, đời còn gì vui hơn?
                     </p>
                     <ul class="space-y-3">
                         <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-check text-leaf-green"></i>
-                            <span>Nguyên liệu tươi ngon từ miền Tây</span>
+                            <span class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-garden-green"><i class="fa-solid fa-tree"></i></span>
+                            <span class="font-bold text-gray-700">100% Không gian mở, gần gũi thiên nhiên</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-check text-leaf-green"></i>
-                            <span>Không gian tre trúc thoáng mát</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-check text-leaf-green"></i>
-                            <span>Hương vị chuẩn "Cơm Nhà"</span>
+                            <span class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-garden-green"><i class="fa-solid fa-water"></i></span>
+                            <span class="font-bold text-gray-700">View sông nước, ngắm lục bình trôi</span>
                         </li>
                     </ul>
                 </div>
@@ -196,160 +277,143 @@
     </section>
 
     <!-- Menu Section -->
-    <section id="menu" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
+    <section id="menu" class="py-20 bg-stone-100 text-gray-800 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')]"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
             <div class="text-center mb-16">
-                <span class="text-leaf-green font-bold text-lg uppercase"><i class="fa-solid fa-utensils mr-2"></i>Thực Đơn Hôm Nay</span>
-                <h2 class="font-serif text-4xl font-bold text-bamboo-dark mt-2">Món Ngon Dân Dã</h2>
-                <div class="w-24 h-1 bg-clay-pot mx-auto mt-4 rounded-full"></div>
+                <span class="text-garden-green font-bold text-lg uppercase tracking-widest font-sans">
+                    <i class="fa-solid fa-carrot mr-2"></i>Đậm Đà Bản Sắc
+                </span>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-earth-brown mt-2">Đặc Sản "Đồng Quê"</h2>
+                <p class="text-gray-600 mt-4 italic max-w-2xl mx-auto">"Những món ăn dân dã, lạ miệng mà chỉ về miền Tây mới có. Thử một lần là nhớ mãi!"</p>
+                <div class="w-24 h-1 bg-garden-green mx-auto mt-4 rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Menu Item 1 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                <!-- Menu Item 1: Đuông Dừa -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://images.unsplash.com/photo-1627308594190-a08c8f280a8f?q=80&w=2000&auto=format&fit=crop" alt="Ca Kho To" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-clay-pot text-white px-3 py-1 rounded-full font-bold text-sm">Best Seller</div>
+                        <img src="https://media.vov.vn/sites/default/files/styles/large/public/2021-04/duong_dua_2.jpg" onerror="this.src='https://images.unsplash.com/photo-1599458252573-56ae36120de1?q=80&w=2070&auto=format&fit=crop'" alt="Đuông Dừa" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 right-4 bg-ripe-mango text-earth-brown px-3 py-1 rounded-full font-bold text-sm shadow-md">Độc Đáo</div>
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Cá Lóc Kho Tộ</h3>
-                        <p class="text-gray-500 text-sm mb-4">Cá lóc đồng kho tiêu trong niêu đất, đậm đà đưa cơm.</p>
-                        <span class="text-leaf-green font-bold text-xl">85.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Đuông Dừa Tắm Mắm</h3>
+                        <p class="text-gray-500 text-sm mb-4">Đặc sản trứ danh Bến Tre. Những chú đuông béo ngậy ngâm trong nước mắm ớt cay nồng.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">50.000đ / con</span>
                     </div>
                 </div>
 
-                <!-- Menu Item 2 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                <!-- Menu Item 2: Chuột Đồng -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://statics.vinpearl.com/canh-chua-ca-loc-mien-tay-1_1688628315.jpg" onerror="this.src='https://images.unsplash.com/photo-1548943487-a2e4e43b485c?q=80&w=2070&auto=format&fit=crop'" alt="Canh Chua" class="w-full h-full object-cover">
+                        <img src="https://cdn.tgdd.vn/Files/2019/09/16/1198539/chuot-dong-nuong-lu-mon-an-dan-da-dam-chat-mien-tay-202201211029177195.jpg" onerror="this.src='https://images.unsplash.com/photo-1606850893596-f32f38db223e?q=80&w=2070&auto=format&fit=crop'" alt="Chuột Đồng" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 right-4 bg-garden-green text-white px-3 py-1 rounded-full font-bold text-sm shadow-md">Must Try</div>
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Canh Chua Bông Điên Điển</h3>
-                        <p class="text-gray-500 text-sm mb-4">Vị chua thanh của me, ngọt của cá và giòn của bông điên điển.</p>
-                        <span class="text-leaf-green font-bold text-xl">90.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Chuột Đồng Nướng Lu</h3>
+                        <p class="text-gray-500 text-sm mb-4">Chuột đồng ăn lúa béo múp, nướng trong lu đất da giòn tan, thịt thơm ngọt tự nhiên.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">120.000đ / đĩa</span>
                     </div>
                 </div>
 
-                <!-- Menu Item 3 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                <!-- Menu Item 3: Dơi Quạ -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Banh_xeo_hcmc.jpg/1200px-Banh_xeo_hcmc.jpg" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop'" alt="Banh Xeo" class="w-full h-full object-cover">
+                        <img src="https://vcdn-dulich.vnecdn.net/2015/05/17/doi-1431869817_1200x0.jpg" onerror="this.src='https://images.unsplash.com/photo-1549471013-3364d7220b75?q=80&w=2070&auto=format&fit=crop'" alt="Dơi Hấp" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Bánh Xèo Miền Tây</h3>
-                        <p class="text-gray-500 text-sm mb-4">Vỏ bánh giòn rụm, nhân tôm thịt, ăn kèm rau rừng.</p>
-                        <span class="text-leaf-green font-bold text-xl">55.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Dơi Quạ Hấp Chao</h3>
+                        <p class="text-gray-500 text-sm mb-4">Thịt dơi mềm, ngọt, tính mát, kết hợp với vị béo bùi đậm đà của chao môn.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">200.000đ / con</span>
                     </div>
                 </div>
 
-                <!-- Menu Item 4 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                 <!-- Menu Item 4: Rắn Mối -->
+                 <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://www.hotelgrandsaigon.com/wp-content/uploads/sites/227/2023/10/lau-mam.jpg" onerror="this.src='https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1974&auto=format&fit=crop'" alt="Lau Mam" class="w-full h-full object-cover">
+                        <img src="https://cdn.tgdd.vn/Files/2020/06/17/1263590/ran-moi-la-con-gi-co-may-loai-an-gi-va-cach-nuoi-ran-moi-202006171428236236.jpg" onerror="this.src='https://images.unsplash.com/photo-1598454594688-66a9d70104f2?q=80&w=1965&auto=format&fit=crop'" alt="Rắn Mối" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Lẩu Mắm Miền Tây</h3>
-                        <p class="text-gray-500 text-sm mb-4">Đặc sản trứ danh với hương vị mắm cá linh đặc trưng.</p>
-                        <span class="text-leaf-green font-bold text-xl">250.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Rắn Mối Chiên Giòn</h3>
+                        <p class="text-gray-500 text-sm mb-4">Món nhậu lai rai cực bén. Rắn mối làm sạch, chiên giòn rụm ăn cả xương.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">95.000đ / đĩa</span>
                     </div>
                 </div>
 
-                <!-- Menu Item 5 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                <!-- Menu Item 5: Vũ Nữ Chân Dài -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=2088&auto=format&fit=crop" alt="Kho Quet" class="w-full h-full object-cover">
+                        <img src="https://thamhiemmekong.com/wp-content/uploads/2020/06/khonhaimientay.jpg" onerror="this.src='https://images.unsplash.com/photo-1599458252573-56ae36120de1?q=80&w=2070&auto=format&fit=crop'" alt="Khô Nhái" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Rau Luộc Kho Quẹt</h3>
-                        <p class="text-gray-500 text-sm mb-4">Đĩa rau vườn xanh mướt chấm kho quẹt tôm khô tóp mỡ.</p>
-                        <span class="text-leaf-green font-bold text-xl">60.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Vũ Nữ Chân Dài</h3>
+                        <p class="text-gray-500 text-sm mb-4">Tức khô nhái An Giang. Chiên mắm tỏi thơm lừng, giòn tan trong miệng.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">150.000đ / đĩa</span>
                     </div>
                 </div>
 
-                <!-- Menu Item 6 -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 group hover:shadow-2xl transition duration-300">
+                <!-- Menu Item 6: Côn Trùng -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200 group hover:border-garden-green hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden card-zoom relative">
-                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=2070&auto=format&fit=crop" alt="Com Tam" class="w-full h-full object-cover">
+                        <img src="https://media.vov.vn/sites/default/files/styles/large/public/2020-10/de_com_chien_gion_1.jpg" onerror="this.src='https://images.unsplash.com/photo-1599458252573-56ae36120de1?q=80&w=2070&auto=format&fit=crop'" alt="Côn Trùng" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="p-6 text-center">
-                        <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Cơm Tấm Sườn Bì</h3>
-                        <p class="text-gray-500 text-sm mb-4">Hạt tấm thơm dẻo, sườn nướng mật ong thơm lừng.</p>
-                        <span class="text-leaf-green font-bold text-xl">45.000đ</span>
+                        <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Dế Cơm Chiên Bơ</h3>
+                        <p class="text-gray-500 text-sm mb-4">Dế cơm to, béo, nhét đậu phộng bên trong rồi chiên bơ. Vừa bùi vừa béo.</p>
+                        <span class="text-earth-brown font-bold text-xl block border-t border-dashed border-gray-200 pt-3">100.000đ / đĩa</span>
                     </div>
                 </div>
             </div>
 
             <div class="text-center mt-12">
-                <button class="border-2 border-bamboo-dark text-bamboo-dark hover:bg-bamboo-dark hover:text-white px-10 py-3 rounded-full font-bold transition">
-                    Xem Toàn Bộ Menu
+                <button class="bg-garden-green text-white hover:bg-earth-brown px-10 py-3 rounded-full font-bold transition uppercase tracking-wider shadow-lg font-sans text-lg border-2 border-white">
+                    <i class="fa-solid fa-utensils mr-2"></i>Đặt Món Ngay
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Gallery / Bamboo Decor Section -->
-    <section id="gallery" class="py-20 bg-amber-50">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row gap-8 items-center mb-12">
-                <div class="md:w-1/3">
-                    <h2 class="font-serif text-4xl font-bold text-bamboo-dark mb-4">Không Gian Tre Trúc</h2>
-                    <p class="text-gray-600">
-                        Tại Chái Bếp Xưa, từng vách tường, bộ bàn ghế đến những chiếc đèn lồng đều được làm thủ công từ tre. Ánh sáng vàng dịu nhẹ hòa quyện cùng màu nâu của tre tạo nên cảm giác ấm cúng lạ thường.
-                    </p>
-                </div>
-                <div class="md:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-4">
-                     <img src="https://images.unsplash.com/photo-1620603700067-156093539827?q=80&w=2070&auto=format&fit=crop" class="rounded-lg h-48 w-full object-cover hover:opacity-90 transition">
-                     <img src="https://images.unsplash.com/photo-1596120155067-4638652d8b77?q=80&w=2071&auto=format&fit=crop" class="rounded-lg h-48 w-full object-cover hover:opacity-90 transition">
-                     <img src="https://images.unsplash.com/photo-1596627690604-09315513101c?q=80&w=2070&auto=format&fit=crop" class="rounded-lg h-48 w-full object-cover hover:opacity-90 transition">
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Reservation Section -->
-    <section id="reservation" class="py-20 relative bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1971&auto=format&fit=crop');">
-        <div class="absolute inset-0 bg-black/60"></div>
+    <section id="reservation" class="py-20 relative bg-fixed bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?q=80&w=2070&auto=format&fit=crop');">
+        <div class="absolute inset-0 bg-garden-green/60"></div>
         <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-2xl mx-auto bg-white/95 backdrop-blur rounded-2xl p-8 md:p-12 shadow-2xl">
+            <div class="max-w-2xl mx-auto bg-white/95 backdrop-blur rounded-2xl p-8 md:p-12 shadow-2xl border-4 border-fresh-green">
                 <div class="text-center mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-bamboo-dark">Đặt Bàn</h2>
-                    <p class="text-gray-600 mt-2">Để chúng tôi chuẩn bị chu đáo nhất cho bữa ăn của bạn</p>
+                    <h2 class="font-serif text-3xl font-bold text-garden-green">Đặt Bàn Giữa Vườn</h2>
+                    <p class="text-gray-600 mt-2 font-sans italic">Để chúng tôi chọn cho bạn chỗ ngồi mát nhất</p>
                 </div>
 
                 <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Họ và Tên</label>
-                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-bamboo-main focus:ring-2 focus:ring-amber-200 outline-none transition" placeholder="Ví dụ: Nguyễn Văn A">
+                            <input type="text" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-garden-green focus:ring-2 focus:ring-green-200 outline-none transition" placeholder="Ví dụ: Anh Ba...">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Số Điện Thoại</label>
-                            <input type="tel" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-bamboo-main focus:ring-2 focus:ring-amber-200 outline-none transition" placeholder="0909...">
+                            <input type="tel" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-garden-green focus:ring-2 focus:ring-green-200 outline-none transition" placeholder="0909...">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Ngày</label>
-                            <input type="date" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-bamboo-main focus:ring-2 focus:ring-amber-200 outline-none transition">
+                            <input type="date" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-garden-green focus:ring-2 focus:ring-green-200 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Số Khách</label>
-                            <select class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-bamboo-main focus:ring-2 focus:ring-amber-200 outline-none transition">
-                                <option>2 Người</option>
-                                <option>4 Người</option>
-                                <option>6 Người</option>
-                                <option>Trên 10 Người</option>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Chỗ Ngồi Ưa Thích</label>
+                            <select class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-garden-green focus:ring-2 focus:ring-green-200 outline-none transition">
+                                <option>Chòi Lá (Trên mặt nước)</option>
+                                <option>Dưới Gốc Xoài</option>
+                                <option>Bàn Tre (Gần Cầu Khỉ)</option>
+                                <option>Trong Nhà Chính</option>
                             </select>
                         </div>
                     </div>
                     
-                    <div>
-                         <label class="block text-sm font-bold text-gray-700 mb-2">Ghi Chú (Tùy chọn)</label>
-                         <textarea class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-bamboo-main focus:ring-2 focus:ring-amber-200 outline-none transition" rows="3" placeholder="Yêu cầu đặc biệt..."></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-clay-pot hover:bg-bamboo-dark text-white font-bold py-4 rounded-lg shadow-lg transition transform hover:-translate-y-1">
+                    <button type="submit" class="w-full bg-earth-brown hover:bg-garden-green text-white font-bold py-4 rounded-lg shadow-lg transition transform hover:-translate-y-1 font-sans text-xl">
                         Xác Nhận Đặt Bàn
                     </button>
                 </form>
@@ -358,64 +422,56 @@
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-bamboo-dark text-amber-50 py-12 border-t-8 border-leaf-green">
-        <div class="container mx-auto px-4">
+    <footer id="contact" class="bg-garden-green text-white py-12 border-t-8 border-ripe-mango relative">
+        <div class="container mx-auto px-4 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
                 <!-- Brand -->
                 <div>
-                    <h3 class="font-serif text-2xl font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
-                        <i class="fa-solid fa-leaf text-leaf-green bg-white p-2 rounded-full text-sm"></i> Chái Bếp Xưa
+                    <h3 class="font-hand text-3xl font-bold mb-4 flex items-center justify-center md:justify-start gap-2 text-ripe-mango">
+                        <i class="fa-solid fa-leaf"></i> Chái Bếp Xưa
                     </h3>
-                    <p class="text-amber-100/80 mb-4">
-                        Nơi lưu giữ hương vị quê hương miền Tây sông nước giữa lòng phố thị. Không gian tre trúc, món ăn đậm tình.
+                    <p class="text-green-100 mb-4">
+                        Nơi lưu giữ hồn quê qua từng món ăn. Về đây để thấy lòng bình yên, bụng no căng và tình thêm đầy.
                     </p>
                     <div class="flex justify-center md:justify-start space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/40 transition"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
 
                 <!-- Contact Info -->
                 <div>
-                    <h3 class="font-serif text-xl font-bold mb-6 border-b border-white/20 pb-2 inline-block">Liên Hệ</h3>
+                    <h3 class="font-serif text-xl font-bold mb-6 text-ripe-mango inline-block border-b border-white/20 pb-2">Ghé Thăm Nhà</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start gap-3 justify-center md:justify-start">
-                            <i class="fa-solid fa-location-dot mt-1 text-amber-300"></i>
-                            <span>123 Đường Bờ Kè, Quận Ninh Kiều, Cần Thơ<br>(Hoặc địa chỉ của bạn)</span>
+                            <i class="fa-solid fa-location-dot mt-1 text-fresh-green"></i>
+                            <span>Ấp Bình Yên, Xã Vườn Thơm, Huyện Phong Điền, Cần Thơ</span>
                         </li>
                         <li class="flex items-center gap-3 justify-center md:justify-start">
-                            <i class="fa-solid fa-phone text-amber-300"></i>
-                            <span>0909 123 456</span>
-                        </li>
-                        <li class="flex items-center gap-3 justify-center md:justify-start">
-                            <i class="fa-solid fa-envelope text-amber-300"></i>
-                            <span>bepxua@gmail.com</span>
+                            <i class="fa-solid fa-phone text-fresh-green"></i>
+                            <span>0909 123 456 (Cô Út)</span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Hours -->
                 <div>
-                    <h3 class="font-serif text-xl font-bold mb-6 border-b border-white/20 pb-2 inline-block">Giờ Mở Cửa</h3>
+                    <h3 class="font-serif text-xl font-bold mb-6 text-ripe-mango inline-block border-b border-white/20 pb-2">Giờ Mở Cửa</h3>
                     <ul class="space-y-2">
                         <li class="flex justify-between max-w-xs mx-auto md:mx-0">
-                            <span>Thứ 2 - Thứ 6:</span>
-                            <span class="font-bold text-amber-300">10:00 - 22:00</span>
+                            <span>Sáng sớm:</span>
+                            <span class="font-bold text-white">09:00 - 14:00</span>
                         </li>
                         <li class="flex justify-between max-w-xs mx-auto md:mx-0">
-                            <span>Thứ 7 - Chủ Nhật:</span>
-                            <span class="font-bold text-amber-300">09:00 - 23:00</span>
+                            <span>Chiều tà:</span>
+                            <span class="font-bold text-white">16:00 - 22:00</span>
                         </li>
                     </ul>
-                    <div class="mt-6 p-4 bg-white/10 rounded-lg border border-white/20">
-                         <p class="text-sm italic"><i class="fa-solid fa-motorcycle mr-2"></i>Có bãi đậu xe máy và ô tô rộng rãi.</p>
-                    </div>
                 </div>
             </div>
             
-            <div class="mt-12 pt-8 border-t border-white/10 text-center text-sm text-amber-200/60">
-                <p>&copy; 2023 Chái Bếp Xưa. Thiết kế mang đậm hồn quê Việt.</p>
+            <div class="mt-12 pt-8 border-t border-white/10 text-center text-sm text-green-200">
+                <p>&copy; 2023 Chái Bếp Xưa. Đậm tình miền Tây.</p>
             </div>
         </div>
     </footer>
@@ -423,14 +479,14 @@
     <!-- Booking Modal Notification -->
     <div id="notification" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeNotification()"></div>
-        <div class="bg-white p-8 rounded-2xl shadow-2xl relative z-10 max-w-md text-center transform scale-100 animate-fade-in-up border-4 border-bamboo-main">
-            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl relative z-10 max-w-md text-center transform scale-100 animate-fade-in-up border-4 border-garden-green">
+            <div class="w-16 h-16 bg-green-100 text-garden-green rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                 <i class="fa-solid fa-check"></i>
             </div>
-            <h3 class="font-serif text-2xl font-bold text-bamboo-dark mb-2">Đặt Bàn Thành Công!</h3>
-            <p class="text-gray-600 mb-6">Cảm ơn bạn đã chọn Chái Bếp Xưa. Chúng tôi sẽ liên hệ lại sớm nhất để xác nhận.</p>
-            <button onclick="closeNotification()" class="bg-leaf-green text-white px-6 py-2 rounded-full font-bold hover:bg-green-700 transition">
-                Đóng
+            <h3 class="font-serif text-2xl font-bold text-garden-green mb-2">Đã Nhận Yêu Cầu!</h3>
+            <p class="text-gray-600 mb-6">Cảm ơn bạn đã đặt bàn. Bếp đang chuẩn bị than hồng và rau sạch để đón tiếp bạn!</p>
+            <button onclick="closeNotification()" class="bg-garden-green text-white px-8 py-2 rounded-full font-bold hover:bg-earth-brown transition shadow-lg">
+                Hẹn Gặp Lại
             </button>
         </div>
     </div>
@@ -445,9 +501,7 @@
         // Handle Booking
         function handleBooking(e) {
             e.preventDefault();
-            // Show notification
             document.getElementById('notification').classList.remove('hidden');
-            // Reset form
             document.getElementById('bookingForm').reset();
         }
 
@@ -455,15 +509,40 @@
             document.getElementById('notification').classList.add('hidden');
         }
 
-        // Change Navbar Style on Scroll
+        // Create Falling Leaves
+        function createLeaves() {
+            const container = document.getElementById('leaf-container');
+            const leafCount = 30;
+            const leafIcons = ['🍃', '🍂', '🌿'];
+
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.classList.add('falling-leaf');
+                leaf.innerHTML = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+                
+                // Random properties
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.animationDuration = Math.random() * 10 + 10 + 's'; // 10-20s (chậm, thư thái)
+                leaf.style.opacity = Math.random() * 0.5 + 0.3;
+                leaf.style.fontSize = Math.random() * 1 + 0.8 + 'rem';
+                leaf.style.animationDelay = Math.random() * 10 + 's';
+                
+                // Random rotation direction in animation handled by keyframes, here we can randomize initial rotation
+                leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                container.appendChild(leaf);
+            }
+        }
+
+        // Run on load
+        window.addEventListener('load', createLeaves);
+        
+        // Navbar Scroll Effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
                 navbar.classList.add('py-2');
-                navbar.classList.remove('py-3');
-            } else {
-                navbar.classList.add('py-3');
-                navbar.classList.remove('py-2');
+                navbar.classList.remove('py-2'); 
             }
         });
     </script>
